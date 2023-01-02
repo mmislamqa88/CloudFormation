@@ -11,7 +11,61 @@
           "Properties": {
             "CidrBlock": "192.168.0.0/16"
           }
+        }, 
+
+        
+        "publicSubnet": {
+          "Type": "AWS::EC2::Subnet",
+          "Properties": {
+            "AvailabilityZone": "us-east-2",
+            "VpcId": { "Ref": "myVPC" },
+            "CidrBlock": {"192.168.1.0/24"}
+          }
+        },
+
+        
+        "publicRouteTable": {
+          "Type": "AWS::EC2::RouteTable",
+          "Properties": {
+            "VpcId": {
+            { "Ref": "myVPC" }
+            }
+          }
+        },
+
+        
+        "routeTableAssocName": {
+          "Type": "AWS::EC2::SubnetRouteTableAssociation",
+          "Properties": {
+            "SubnetId": { "Ref": "publicSubnet" }
+            },
+            "RouteTableId":  { "Ref": "publicRouteTable" }
+            
+          },
+        
+
+        
+        "myIGW": {
+          "Type": "AWS::EC2::InternetGateway",
+          "Properties": {
+          }
+        },
+        "AttachGateway": {
+          "Type": "AWS::EC2::VPCGatewayAttachment",
+          "Properties": {
+            "VpcId": 
+            { "Ref": "myVPC" }
+            ,
+            "InternetGatewayId": { "Ref": "myIGW" }
+          }
         }
+
+      
+        
+        
+        
+        
+        
         
 
     },
