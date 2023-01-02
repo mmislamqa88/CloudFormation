@@ -19,7 +19,7 @@
           "Properties": {
             "AvailabilityZone": "us-east-2",
             "VpcId": { "Ref": "myVPC" },
-            "CidrBlock": {"192.168.1.0/24"}
+            "CidrBlock": "192.168.1.0/24"
           }
         },
 
@@ -27,8 +27,7 @@
         "publicRouteTable": {
           "Type": "AWS::EC2::RouteTable",
           "Properties": {
-            "VpcId": {
-            { "Ref": "myVPC" }
+            "VpcId": { "Ref": "myVPC" }
             }
           }
         },
@@ -72,4 +71,3 @@
 
 
     "Outputs": {}
-}
