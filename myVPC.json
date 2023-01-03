@@ -62,9 +62,81 @@
               "GatewayId": { "Ref": "myIGW" }
               
             }
-          }
+          },
+
           
-      
-      
+          "privateSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+              "AvailabilityZone": "us-east-2b",
+              "VpcId": { "Ref": "myVPC" },
+              "CidrBlock": "192.168.2.0/24"
+            }
+          },
+
+          
+          "privateRouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+              "VpcId": { "Ref": "myVPC" }
+             
+            }
+          },
+
+          
+          "privateRouteTableAssociation": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+              "SubnetId": { "Ref": "privateSubnet" },
+              "RouteTableId": { "Ref": "privateRouteTable" }
+              
+            }
+          },
+
+          "NATGatewayEIP" : {
+            "Type" : "AWS::EC2::EIP"
+         },
+          
+         "myNATGateway" : {
+            "Type" : "AWS::EC2::NatGateway",
+            "Properties" : {
+               "AllocationId" : { 
+                   "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"]},
+                   "SubnetId" : { "Ref" : "publicSubnet" }
+              }
+         },
+
+         
+         "NatGatewayRoute": {
+            "DependsOn": [ "myNATGateway" ],
+           "Type": "AWS::EC2::Route",
+           "Properties": {
+             "RouteTableId": { "Ref": "privateRouteTable" },
+              "DestinationCidrBlock": "0.0.0.0/0",
+             "NatGatewayId": { "Ref": "myNATGateway" }
+             
+           }
+         }
+    },
+
+    "Outputs": {
+
+        
+        "myVPCID" : {
+          "Value" : { "Ref": "myVPC" }
+        },
+
+        "publicSubnet" : {
+            "Value" : { "Ref": "publicSubnet" }
+          },
+
+          "privateSubnet" : {
+            "Value" : { "Ref": "privateSubnet" }
+          },
+
+          "NatGatewayRoute" : {
+            "Value" : { "Ref": "NatGatewayRoute" }
+          }
+    
     }
 }
