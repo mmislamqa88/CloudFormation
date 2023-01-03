@@ -1,7 +1,26 @@
 {
     "AWSTemplateFormatVersion" : "2010-09-09",
 
-    "Parameters": {},
+    "Parameters": {
+
+        
+        "PublicAZ": {
+            "Description": "PublicAZ",
+            "Type": "AWS::EC2::AvailabilityZone::Name"
+        },
+
+        
+        "PrivateAZ": {
+            "Description": "PrivateAZ",
+            "Type": "AWS::EC2::AvailabilityZone::Name"
+        }
+        
+        
+        
+        
+        
+        
+    },
 
     "Resources": {
 
@@ -17,7 +36,7 @@
         "publicSubnet": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
-              "AvailabilityZone": "us-east-2a",
+              "AvailabilityZone": { "Ref": "PublicAZ" },
               "VpcId": { "Ref": "myVPC" },
               "CidrBlock": "192.168.1.0/24"
             }
@@ -68,7 +87,7 @@
           "privateSubnet": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
-              "AvailabilityZone": "us-east-2b",
+              "AvailabilityZone": { "Ref": "PrivateAZ" },
               "VpcId": { "Ref": "myVPC" },
               "CidrBlock": "192.168.2.0/24"
             }
